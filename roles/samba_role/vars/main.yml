@@ -1,0 +1,16 @@
+---
+# vars file for samba_role
+
+template_src: ../templates/smb.conf.template
+template_dest: /etc/samba/smb.conf
+
+system_service: smb
+firewall_service: samba
+
+share_path: /mnt/share
+owner: root
+group: root
+perm: 0777
+
+setype: samba_share_t
+

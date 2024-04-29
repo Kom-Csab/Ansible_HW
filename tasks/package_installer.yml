@@ -1,0 +1,24 @@
+---
+- name: Install packages
+  vars:
+    packages:
+      - samba
+      - firewalld
+      - cifs-utils
+      - policycoreutils-python
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: Enable and start services
+  vars:
+    services:
+      - smb
+      - firewalld
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ services }}"
+

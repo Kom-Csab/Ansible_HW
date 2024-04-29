@@ -1,0 +1,31 @@
+---
+# tasks file for samba_role
+
+- name: Create share dir
+  ansible.builtin.file:
+    path: "{{ share_path }}"
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "{{ perm }}"
+
+- name: Ensure correct SELinux context
+  community.general.sefcontext:
+    target: "{{ share_path }}(/.*)?"
+    setype: "{{ setype }}"
+    state: present
+  notify: restore file context
+
+- name: Ensure firewall rule
+  ansible.posix.firewalld:
+    service: "{{ firewall_service }}"
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Deploy jinja2 template config file
+  ansible.builtin.template:
+    src: "{{ template_src }}"
+    dest: "{{ template_dest }}"
+  notify: restart samba
+

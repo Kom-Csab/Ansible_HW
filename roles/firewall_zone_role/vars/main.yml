@@ -1,0 +1,22 @@
+---
+# vars file for firewall_zone_role
+
+zone_name: custom
+zone_action: '%%REJECT%%'
+zone_state: present
+is_it_permanent_zone: true
+
+services:
+  - ssh
+  - samba
+service_action: enabled
+is_it_permanent_service: true
+
+ports:
+  - 4312/tcp
+  - 4312/udp
+port_action: enabled
+is_it_permanent_port: true
+
+fw_svc: firewalld
+

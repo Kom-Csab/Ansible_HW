@@ -1,0 +1,11 @@
+---
+# handlers file for samba_role
+
+- name: restart samba
+  ansible.builtin.service:
+    name: "{{ system_service }}"
+    state: restarted
+
+- name: restore file context
+  ansible.builtin.command: restorecon -irv "{{ share_path }}"
+

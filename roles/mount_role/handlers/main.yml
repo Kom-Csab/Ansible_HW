@@ -1,0 +1,7 @@
+---
+# handlers file for mount_role
+
+- name: reload daemon
+  ansible.builtin.service:
+    daemon_reload: true
+

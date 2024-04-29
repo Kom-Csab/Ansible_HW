@@ -1,0 +1,33 @@
+---
+- name: Creates firewall zone
+  ansible.posix.firewalld:
+    zone: "{{ zone_name }}"
+    state: "{{ zone_state }}"
+    permanent: "{{ is_it_permanent_zone }}"
+
+- name: Set the target of the firewall
+  ansible.posix.firewalld:
+    zone: "{{ zone_name }}"
+    state: "{{ zone_state }}"
+    permanent: "{{ is_it_permanent_zone }}"
+    target: "{{ zone_action }}"
+  notify: restart firewalld
+
+- name: Enable/Disable services in that zone
+  ansible.posix.firewalld:
+    zone: "{{ zone_name }}"
+    service: "{{ item }}"
+    state: "{{ service_action }}"
+    permanent: "{{ is_it_permanent_service }}"
+  loop: "{{ services }}"
+  when: services is defined
+
+- name: Enable/Disable ports in that zone
+  ansible.posix.firewalld:
+    zone: "{{ zone_name }}"
+    port: "{{ item }}"
+    state: "{{ port_action }}"
+    permanent: "{{ is_it_permanent_port }}"
+  loop: "{{ ports }}"
+  when: ports is defined
+

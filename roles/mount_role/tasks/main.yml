@@ -1,0 +1,26 @@
+---
+# tasks file for mount_role
+
+- name: Check if mountpoint exists
+  ansible.builtin.stat:
+    path: "{{ mnt_point }}"
+  register: is_it_a_mnt_point
+
+- name: Ensure desired mountpoint exists
+  ansible.builtin.file:
+    path: "{{ mnt_point }}"
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "{{ perm }}"
+  when: not is_it_a_mnt_point
+
+- name: Mount smb share
+  ansible.posix.mount:
+    src: "//{{ IP }}/{{ path_to_share}}"
+    path: "{{ mnt_point }}"
+    opts: "{{ options }}"
+    fstype: cifs
+    state: mounted
+  notify: reload daemon
+

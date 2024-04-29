@@ -1,0 +1,12 @@
+---
+# vars file for mount_role
+
+mnt_point: /data
+owner: root
+group: root
+perm: 0777
+
+IP: 10.0.2.11
+path_to_share: guest
+options: "guest,x-systemd.automount"
+

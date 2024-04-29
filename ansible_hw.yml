@@ -1,0 +1,11 @@
+---
+- name: Ansible homework
+  hosts: servers
+  pre_tasks:
+    - import_tasks: tasks/package_installer.yml
+
+  roles:
+    - samba_role
+    - mount_role
+    - firewall_zone_role
+
